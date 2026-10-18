@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$autoload = [
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../vendor/autoload.php',
+];
+foreach ($autoload as $file) {
+    if (is_file($file)) {
+        require $file;
+        break;
+    }
+}
+
+use BackupKit\Cli\Application;
+
+exit(Application::run($argv));

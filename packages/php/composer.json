@@ -1,0 +1,39 @@
+{
+  "name": "backup-kit/backup-kit",
+  "description": "Framework-first database backup toolkit for Laravel and PHP apps",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["backup", "restore", "mysql", "postgres", "s3", "retention"],
+  "require": {
+    "php": ">=8.2",
+    "ext-json": "*",
+    "ext-hash": "*",
+    "ext-zlib": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.0"
+  },
+  "suggest": {
+    "ext-zstd": "Enable zstd compression (compression: zstd)"
+  },
+  "autoload": {
+    "psr-4": {
+      "BackupKit\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BackupKit\\Tests\\": "tests/"
+    }
+  },
+  "bin": [
+    "bin/backup-kit"
+  ],
+  "scripts": {
+    "test": "phpunit"
+  },
+  "minimum-stability": "stable"
+}

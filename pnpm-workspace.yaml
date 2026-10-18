@@ -1,0 +1,6 @@
+packages:
+  - "packages/nodejs"
+
+allowBuilds:
+  "@mongodb-js/zstd": true
+  esbuild: true

@@ -1,0 +1,5 @@
+# Covered by root .gitignore; keep package-local extras here if needed.
+/.phpunit.cache/
+/vendor/
+/composer.lock
+/.tmp-php-*/

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://backup-kit.dev/spec/driver.schema.json",
+  "title": "BackupKitDriver",
+  "description": "Contract for database and storage drivers. Language packages map this to native interfaces.",
+  "oneOf": [
+    { "$ref": "#/$defs/databaseDriver" },
+    { "$ref": "#/$defs/storageDriver" }
+  ],
+  "$defs": {
+    "driverMeta": {
+      "type": "object",
+      "required": ["id", "kind", "version"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Stable driver identifier"
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["database", "storage"]
+        },
+        "version": {
+          "type": "string",
+          "description": "SemVer of the driver implementation"
+        },
+        "displayName": { "type": "string" },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "dump",
+              "restore",
+              "stream",
+              "incremental",
+              "list",
+              "delete",
+              "exists"
+            ]
+          }
+        }
+      }
+    },
+    "databaseDriver": {
+      "allOf": [
+        { "$ref": "#/$defs/driverMeta" },
+        {
+          "type": "object",
+          "properties": {
+            "kind": { "const": "database" },
+            "methods": {
+              "type": "object",
+              "description": "Required method signatures (documentation only)",
+              "properties": {
+                "dump": {
+                  "description": "dump(ctx, options) → ArtifactStream"
+                },
+                "restore": {
+                  "description": "restore(ctx, stream, options) → void"
+                },
+                "inspect": {
+                  "description": "inspect(ctx) → SourceInfo"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "storageDriver": {
+      "allOf": [
+        { "$ref": "#/$defs/driverMeta" },
+        {
+          "type": "object",
+          "properties": {
+            "kind": { "const": "storage" },
+            "methods": {
+              "type": "object",
+              "description": "Required method signatures (documentation only)",
+              "properties": {
+                "put": { "description": "put(ctx, key, stream) → void" },
+                "get": { "description": "get(ctx, key) → ArtifactStream" },
+                "list": { "description": "list(ctx, prefix?) → ArtifactMeta[]" },
+                "delete": { "description": "delete(ctx, key) → void" },
+                "exists": { "description": "exists(ctx, key) → boolean" }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

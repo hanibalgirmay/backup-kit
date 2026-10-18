@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://backup-kit.dev/spec/config.schema.json",
+  "title": "BackupKitConfig",
+  "description": "Framework-first database backup config. Relational + non-relational sources, cron schedule, retention, and flexible local/remote outputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "default": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "Backup job name (used in artifact filenames)"
+    },
+    "framework": {
+      "type": "string",
+      "enum": ["auto", "nestjs", "express", "fastify", "laravel", "django", "fastapi", "plain"],
+      "default": "auto",
+      "description": "Host framework — adapters use this for auto-wiring"
+    },
+    "database": {
+      "description": "Database source(s). Use \"auto\" to discover from env / framework config. Or pass explicit source object(s).",
+      "oneOf": [
+        { "const": "auto" },
+        { "$ref": "#/$defs/source" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        }
+      ],
+      "default": "auto"
+    },
+    "sources": {
+      "description": "Explicit dump sources. Optional when database is set.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/source" }
+    },
+    "outputs": {
+      "description": "Where to store .bk artifacts. Defaults to local ./backups.",
+      "oneOf": [
+        { "$ref": "#/$defs/output" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/output" }
+        }
+      ],
+      "default": [{ "driver": "local", "path": "./backups" }]
+    },
+    "destination": {
+      "description": "Legacy alias for outputs.",
+      "oneOf": [
+        { "$ref": "#/$defs/output" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/output" }
+        }
+      ]
+    },
+    "retention": {
+      "allOf": [{ "$ref": "#/$defs/retention" }],
+      "default": { "keepLast": 7 }
+    },
+    "schedule": {
+      "description": "Cron schedule for automatic backups. String cron or object.",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Cron expression, e.g. \"0 2 * * *\" (daily 02:00)"
+        },
+        { "$ref": "#/$defs/scheduleObject" }
+      ]
+    },
+    "encryption": { "$ref": "#/$defs/encryption" },
+    "compression": {
+      "type": "string",
+      "enum": ["none", "gzip", "zstd"],
+      "default": "gzip"
+    },
+    "hooks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "beforeBackup": { "type": "array", "items": { "type": "string" } },
+        "afterBackup": { "type": "array", "items": { "type": "string" } },
+        "beforeRestore": { "type": "array", "items": { "type": "string" } },
+        "afterRestore": { "type": "array", "items": { "type": "string" } },
+        "onError": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "anyOf": [
+    { "required": ["sources"] },
+    { "required": ["database"] },
+    {
+      "properties": { "framework": { "type": "string" } },
+      "required": ["framework"]
+    }
+  ],
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["driver"],
+      "additionalProperties": true,
+      "properties": {
+        "name": { "type": "string" },
+        "driver": {
+          "type": "string",
+          "description": "Relational: postgres|mysql|sqlite. Non-relational: mongodb|redis. Or custom plugin id."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["relational", "document", "keyvalue", "auto"],
+          "default": "auto"
+        },
+        "connection": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "object", "additionalProperties": true }
+          ]
+        },
+        "options": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "required": ["driver"],
+      "additionalProperties": true,
+      "properties": {
+        "name": { "type": "string" },
+        "driver": {
+          "type": "string",
+          "description": "local | s3 | gcs | azure | sftp | ssh | webdav | drive (ssh aliases sftp)"
+        },
+        "path": { "type": "string" },
+        "host": { "type": "string" },
+        "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "endpoint": { "type": "string" },
+        "connection": { "type": "object", "additionalProperties": true },
+        "credentials": { "type": "object", "additionalProperties": true },
+        "options": { "type": "object", "additionalProperties": true }
+      }
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "keepLast": { "type": "integer", "minimum": 0, "default": 7 },
+        "keepDaily": { "type": "integer", "minimum": 0 },
+        "keepWeekly": { "type": "integer", "minimum": 0 },
+        "keepMonthly": { "type": "integer", "minimum": 0 },
+        "keepYearly": { "type": "integer", "minimum": 0 },
+        "maxAgeDays": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "scheduleObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cron"],
+      "properties": {
+        "cron": {
+          "type": "string",
+          "description": "Cron expression"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "IANA timezone, e.g. Africa/Cairo"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "pruneAfterBackup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run retention prune after each scheduled backup"
+        }
+      }
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["none", "aes-256-gcm"]
+        },
+        "keyEnv": { "type": "string" }
+      }
+    }
+  }
+}

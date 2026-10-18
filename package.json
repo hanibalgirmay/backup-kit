@@ -1,0 +1,11 @@
+{
+  "name": "backup-kit",
+  "private": false,
+  "packageManager": "pnpm@12.3.4",
+  "scripts": {
+    "build": "pnpm --filter @ryle/backup-kit build",
+    "test": "pnpm --filter @ryle/backup-kit test",
+    "typecheck": "pnpm --filter @ryle/backup-kit typecheck",
+    "publish:nodejs": "pnpm --filter @ryle/backup-kit publish --access public"
+  }
+}
