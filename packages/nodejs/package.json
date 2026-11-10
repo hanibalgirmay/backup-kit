@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Framework-first database backup toolkit for NestJS, Express, and Node apps",
   "license": "MIT",
+  "author": "Hanibal Girmay",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -53,13 +54,17 @@
     "bin",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "prepublishOnly": "pnpm test && pnpm build"
   },
   "engines": {
     "node": ">=18"

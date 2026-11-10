@@ -1,10 +1,31 @@
 [project]
 name = "backup-kit"
 version = "0.1.0"
-description = "Python runtime for backup-kit (scaffold)"
+description = "Framework-first database backup toolkit for Django and FastAPI"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
+authors = [{ name = "Hanibal Girmay" }]
+keywords = ["backup", "restore", "postgres", "mysql", "mongodb", "django", "fastapi"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Database",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.urls]
+Homepage = "https://github.com/backup-kit/backup-kit"
+Documentation = "https://github.com/backup-kit/backup-kit/tree/main/docs"
+Publishing = "https://github.com/backup-kit/backup-kit/blob/main/docs/publishing.md"
 
 [build-system]
 requires = ["setuptools>=68"]
@@ -13,3 +34,7 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["backup_kit*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

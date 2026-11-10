@@ -25,3 +25,7 @@ result, err := kit.Backup()
 ## Gin
 
 See [docs/frameworks/go.md](../frameworks/go.md) and [`examples/go-gin`](../../examples/go-gin).
+
+## Publish
+
+See [publishing.md](../publishing.md#4-go--modules-proxy).

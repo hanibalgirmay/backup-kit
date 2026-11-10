@@ -52,12 +52,17 @@ vendor/bin/backup-kit list
 vendor/bin/backup-kit prune
 ```
 
-## Develop
+## Develop / publish
 
 ```bash
 composer install
 composer test
+composer validate --strict
 ```
+
+Packagist mirrors a git tag (prefer a `packages/php` subtree repo). Full steps: [docs/publishing.md](../../docs/publishing.md).
+
+**Author:** Hanibal Girmay · **License:** MIT
 
 ## Notes
 

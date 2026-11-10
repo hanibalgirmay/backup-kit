@@ -1,0 +1,11 @@
+# GitHub Pages (docs/ folder)
+title: backup-kit
+description: Framework-first database backups for NestJS, Laravel, Django, FastAPI, and Gin
+author: Hanibal Girmay
+theme: jekyll-theme-cayman
+markdown: GFM
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true

@@ -3,7 +3,18 @@
   "description": "Framework-first database backup toolkit for Laravel and PHP apps",
   "type": "library",
   "license": "MIT",
-  "keywords": ["backup", "restore", "mysql", "postgres", "s3", "retention"],
+  "keywords": ["backup", "restore", "mysql", "postgres", "s3", "retention", "laravel"],
+  "authors": [
+    {
+      "name": "Hanibal Girmay",
+      "role": "Developer"
+    }
+  ],
+  "homepage": "https://github.com/backup-kit/backup-kit",
+  "support": {
+    "issues": "https://github.com/backup-kit/backup-kit/issues",
+    "source": "https://github.com/backup-kit/backup-kit"
+  },
   "require": {
     "php": ">=8.2",
     "ext-json": "*",

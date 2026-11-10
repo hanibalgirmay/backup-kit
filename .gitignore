@@ -1,31 +1,47 @@
 # OS / editors
 .DS_Store
 Thumbs.db
+Desktop.ini
 .idea/
 .vscode/
 *.swp
 *.swo
+*~
 
 # Secrets / local env
 .env
 .env.*
 !.env.example
 
-# Node (npm / pnpm)
+# ── Node (npm / pnpm) ──────────────────────────────────────────
 node_modules/
 dist/
 .turbo/
 coverage/
+.nyc_output/
 *.tsbuildinfo
 .pnpm-store/
 .npm/
+*.tgz
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.vitest/
+.eslintcache
 
-# PHP
+# ── PHP ────────────────────────────────────────────────────────
 vendor/
 .phpunit.cache/
+.phpunit.result.cache
 composer.phar
+.php-cs-fixer.cache
+.phpstan/
+psalm.xml-cache/
+# library: lockfile not committed (Packagist uses tags)
+packages/php/composer.lock
 
-# Python
+# ── Python ─────────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
@@ -33,14 +49,24 @@ __pycache__/
 .eggs/
 .venv/
 venv/
+ENV/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
 build/
 *.egg
-dist/
+*.whl
+packages/python/dist/
+packages/python/*.egg-info/
+pip-wheel-metadata/
 
-# Go
+# ── Go ─────────────────────────────────────────────────────────
 *.exe
 *.exe~
 *.dll
@@ -48,13 +74,27 @@ dist/
 *.dylib
 *.test
 *.out
+# compiled binaries only — keep source CLI scripts in packages/*/bin/
 /bin/
 packages/go/bin/
-examples/go-gin/bin/
+examples/**/bin/
+# local module vendor (if someone runs go mod vendor)
+packages/go/vendor/
 
-# Backup artifacts / local test dumps
+# ── Backup artifacts / local test dumps ────────────────────────
 *.bk
 backups/
 .tmp-backups*/
 .tmp-php-*/
 storage/backups/
+packages/**/backups/
+
+# ── Misc caches / temp ─────────────────────────────────────────
+*.log
+.cache/
+tmp/
+temp/
+*.tmp
+*.temp
+.jekyll-cache/
+_site/

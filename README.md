@@ -1,21 +1,64 @@
 # backup-kit
 
-Framework-first **database backup** toolkit. Install into NestJS, Express, Laravel, Django, or FastAPI — it discovers your DB, runs on a cron schedule, applies retention, and stores backups locally or to remote storage.
+<p align="center">
+  <strong>Framework-first database backups</strong><br/>
+  NestJS · Express · Laravel · Django · FastAPI · Gin
+</p>
 
-Supports **relational** (Postgres, MySQL, SQLite) and **non-relational** (MongoDB, Redis) sources.
+<p align="center">
+  Discover your DB · schedule cron · apply retention · store locally or remotely
+</p>
 
-## Install by language (separate packages)
+<p align="center">
+  <a href="./docs/getting-started.md">Getting started</a> ·
+  <a href="./docs/configuration.md">Configuration</a> ·
+  <a href="./docs/drivers.md">Drivers</a> ·
+  <a href="./docs/publishing.md">Publishing</a> ·
+  <a href="./SECURITY.md">Security</a>
+</p>
 
-Each runtime is published **on its own registry**. Installing one never pulls the others.
+---
 
-| You use | Install command | Registry |
+**Author:** Hanibal Girmay  
+**License:** [MIT](./LICENSE)
+
+backup-kit is a multi-language toolkit you drop into your app. It discovers the database from env / framework config, runs on a cron schedule, keeps retention rules, and writes backups to local disk or remotes (S3, SSH/SFTP, GCS, Azure, WebDAV, Drive).
+
+| Kind | Drivers |
+| --- | --- |
+| Relational | Postgres, MySQL, SQLite |
+| Document / KV | MongoDB, Redis |
+
+> **Status:** Node & PHP local backup paths are furthest along. Python and some remote/DB dump drivers are scaffolded — see [CHANGELOG](./CHANGELOG.md).
+
+---
+
+## Quick install
+
+Each language is a **separate** package. Installing one never pulls the others.
+
+| You use | Install | Registry |
 | --- | --- | --- |
 | NestJS / Express / Node | `npm install @ryle/backup-kit` | npm |
 | Laravel / PHP | `composer require backup-kit/backup-kit` | Packagist |
 | Django / FastAPI / Python | `pip install backup-kit` | PyPI |
 | Gin / Go | `go get github.com/backup-kit/backup-kit/backupkit` | Go modules |
 
-Full publish + install walkthrough: [docs/publishing.md](./docs/publishing.md)
+Full install + maintainer publish steps → [docs/publishing.md](./docs/publishing.md)
+
+---
+
+## Features
+
+1. **`database: "auto"`** — reads `DATABASE_URL`, ORM env, or framework DB config  
+2. **Cron schedule** — in-process or framework scheduler hooks  
+3. **Retention** — `keepLast` / daily / weekly / monthly / `maxAgeDays`  
+4. **Flexible outputs** — `local`, `s3`, `gcs`, `azure`, `ssh`/`sftp`, `webdav`, `drive`  
+5. **One contract** — shared [`spec/`](./spec) across Node, PHP, Python, and Go  
+
+---
+
+## Usage by stack
 
 ### NestJS
 
@@ -26,9 +69,9 @@ npm install @ryle/backup-kit
 ```ts
 import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
 
-const backup = BackupModule.forRoot({
-  // database: "auto" is the default — reads DATABASE_URL / ORM env
-  schedule: "0 2 * * *",          // every day at 02:00
+BackupModule.forRoot({
+  // database: "auto" by default — DATABASE_URL / ORM env
+  schedule: "0 2 * * *",
   retention: { keepLast: 7, keepDaily: 14 },
   outputs: [{ driver: "local", path: "./storage/backups" }],
 });
@@ -45,12 +88,11 @@ import express from "express";
 import { setupBackupKit } from "@ryle/backup-kit/adapters/express";
 
 const app = express();
-const kit = setupBackupKit(app, {
+setupBackupKit(app, {
   schedule: "0 2 * * *",
   retention: { keepLast: 7 },
   outputs: [{ driver: "local", path: "./backups" }],
 });
-// kit.start() is called for you when schedule is set
 ```
 
 ### Laravel
@@ -62,12 +104,11 @@ composer require backup-kit/backup-kit
 ```php
 // config/backup-kit.php
 return [
-    'database' => 'auto', // uses config('database.default')
+    'database' => 'auto',
     'schedule' => '0 2 * * *',
     'retention' => ['keepLast' => 7, 'keepDaily' => 14],
     'outputs' => [
         ['driver' => 'local', 'path' => storage_path('app/backups')],
-        // ['driver' => 's3', 'connection' => ['bucket' => 'backups'], 'credentials' => ['useDefault' => true]],
     ],
 ];
 ```
@@ -101,34 +142,90 @@ import (
 )
 
 h, err := ginadapter.Setup(backupkit.Config{
-  Schedule: "0 2 * * *",
+  Schedule:  "0 2 * * *",
   Retention: &backupkit.Retention{KeepLast: backupkit.Int(7)},
-  Outputs: []backupkit.Output{{Driver: "local", Path: "./backups"}},
+  Outputs:   []backupkit.Output{{Driver: "local", Path: "./backups"}},
 })
 ```
 
-## What you get
+Framework guides: [Node](./docs/frameworks/nodejs.md) · [Laravel](./docs/frameworks/laravel.md) · [Python](./docs/frameworks/python.md) · [Go](./docs/frameworks/go.md)
 
-1. **Auto database source** — `database: "auto"` from env / framework config  
-2. **Cron jobs** — in-process schedule or framework scheduler hooks  
-3. **Retention** — keepLast / daily / weekly / monthly / maxAgeDays  
-4. **Flexible outputs** — local, S3, GCS, Azure, SSH/SFTP, WebDAV, Drive  
-5. **Relational + document/KV** — postgres, mysql, sqlite, mongodb, redis  
+---
 
-## Layout
+## Minimal config
+
+```json
+{
+  "database": "auto",
+  "schedule": "0 2 * * *",
+  "retention": { "keepLast": 7, "keepDaily": 14 },
+  "outputs": [
+    { "driver": "local", "path": "./backups" },
+    {
+      "driver": "ssh",
+      "host": "backup.example.com",
+      "connection": { "username": "backup", "remotePath": "/var/backups" },
+      "credentials": { "privateKey": { "file": "./id_ed25519" } }
+    }
+  ]
+}
+```
+
+`ssh` is a friendly alias of `sftp` for any SSH host. More: [configuration](./docs/configuration.md) · [drivers](./docs/drivers.md) · [retention](./docs/retention.md)
+
+---
+
+## Documentation
+
+| Doc | Description |
+| --- | --- |
+| [Getting started](./docs/getting-started.md) | First backup in minutes |
+| [Configuration](./docs/configuration.md) | Config shape & credentials |
+| [Drivers](./docs/drivers.md) | DB + storage drivers |
+| [Publishing](./docs/publishing.md) | Publish to npm / Packagist / PyPI / Go |
+| [Security](./SECURITY.md) | Vulnerability reporting |
+| [Contributing](./CONTRIBUTING.md) | Dev setup & PR guide |
+| [Changelog](./CHANGELOG.md) | Release notes |
+
+---
+
+## Repository layout
 
 ```
 backup-kit/
-├── spec/          # shared contract (source of truth)
-├── docs/          # guides + framework install docs
-├── examples/      # Nest, Express, Laravel, FastAPI, …
-└── packages/
-    ├── nodejs/    # @ryle/backup-kit
-    ├── php/       # backup-kit/backup-kit
-    ├── python/    # backup-kit
-    └── go/        # github.com/backup-kit/backup-kit
+├── spec/             # shared contract
+├── docs/             # user + maintainer guides
+├── examples/         # Nest, Express, Laravel, FastAPI, Gin, …
+├── packages/
+│   ├── nodejs/       # @ryle/backup-kit          → npm
+│   ├── php/          # backup-kit/backup-kit     → Packagist
+│   ├── python/       # backup-kit                → PyPI
+│   └── go/           # github.com/backup-kit/…   → Go modules
+├── SECURITY.md
+├── CONTRIBUTING.md
+└── LICENSE
 ```
 
-## License
+---
 
-MIT
+## Develop locally
+
+```bash
+pnpm install
+pnpm test:all          # Node + PHP + Python + Go
+```
+
+Copy [`.env.example`](./.env.example) → `.env` for local experiments (never commit secrets).
+
+---
+
+## Author & license
+
+Created and maintained by **Hanibal Girmay**.
+
+```
+MIT © Hanibal Girmay
+```
+
+See [LICENSE](./LICENSE) for the full text.  
+By participating, you agree to our [Code of Conduct](./CODE_OF_CONDUCT.md).

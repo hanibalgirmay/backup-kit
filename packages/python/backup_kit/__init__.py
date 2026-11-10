@@ -11,6 +11,16 @@ DEFAULT_RETENTION = {"keepLast": 7}
 DEFAULT_OUTPUT = {"name": "local", "driver": "local", "path": "./backups"}
 
 
+def normalize_output_driver(driver: str) -> str:
+    """Map friendly aliases onto registered storage driver ids."""
+    key = (driver or "").lower()
+    if key == "ssh":
+        return "sftp"
+    if key in ("gdrive", "google-drive"):
+        return "drive"
+    return key
+
+
 def _driver_from_url(url: str) -> str | None:
     scheme = urlparse(url).scheme.lower()
     if scheme.startswith("postgres"):
@@ -96,6 +106,17 @@ def define_config(config: dict[str, Any] | None = None) -> dict[str, Any]:
     outputs = cfg.get("outputs") or cfg.get("destination") or [DEFAULT_OUTPUT]
     if isinstance(outputs, dict):
         outputs = [outputs]
+    normalized_outputs: list[dict[str, Any]] = []
+    for index, output in enumerate(outputs):
+        item = dict(output)
+        driver = normalize_output_driver(str(item.get("driver", "local")))
+        item["driver"] = driver
+        if not item.get("name"):
+            item["name"] = "local" if driver == "local" and len(outputs) == 1 else f"{driver}-{index}"
+        if driver == "local" and not item.get("path"):
+            item["path"] = DEFAULT_OUTPUT["path"]
+        normalized_outputs.append(item)
+    outputs = normalized_outputs
 
     schedule = cfg.get("schedule")
     if isinstance(schedule, str):

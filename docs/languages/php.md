@@ -64,6 +64,10 @@ $this->app->singleton(\BackupKit\BackupKit::class, fn () =>
 | `zstd` | `ext-zstd` |
 | `none` | — |
 
+## Publish
+
+See [publishing.md](../publishing.md#2-php--packagist-composer).
+
 ## Examples
 
 See [`examples/php-plain`](../../examples/php-plain) and [`examples/php-laravel`](../../examples/php-laravel).

@@ -73,11 +73,15 @@ h, err := ginadapter.Setup(backupkit.Config{
 // h.Mount(...) or gin.WrapF(h.Backup)
 ```
 
-## Develop
+## Develop / publish
 
 ```bash
 cd packages/go
 go test ./...
 ```
 
+Go modules need `go.mod` at the **module repo root**. Publish via subtree/split so `packages/go` becomes the root of `github.com/backup-kit/backup-kit`, then tag `v0.1.0`.
+
 See [docs/frameworks/go.md](../../docs/frameworks/go.md) and [docs/publishing.md](../../docs/publishing.md).
+
+**Author:** Hanibal Girmay · **License:** MIT

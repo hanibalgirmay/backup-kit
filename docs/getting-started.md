@@ -1,6 +1,6 @@
 # Getting started
 
-backup-kit is a **framework-first database backup** tool. Install it in your app, point it at cron + retention + storage, and it discovers your database automatically.
+backup-kit is a **framework-first database backup** tool by **Hanibal Girmay**. Install it in your app, point it at cron + retention + storage, and it discovers your database automatically.
 
 ## Pick your stack
 
@@ -9,6 +9,9 @@ backup-kit is a **framework-first database backup** tool. Install it in your app
 | NestJS / Express / Fastify | [frameworks/nodejs.md](./frameworks/nodejs.md) |
 | Laravel | [frameworks/laravel.md](./frameworks/laravel.md) |
 | Django / FastAPI | [frameworks/python.md](./frameworks/python.md) |
+| Gin / Go | [frameworks/go.md](./frameworks/go.md) |
+
+Publish each language separately: [publishing.md](./publishing.md).
 
 ## Core ideas
 

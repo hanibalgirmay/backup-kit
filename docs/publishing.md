@@ -1,25 +1,61 @@
 # Install & publish (one package per language)
 
-This repo is a **monorepo**. Each language runtime is published **separately**.  
-Installing Node does **not** install PHP or Python (and vice versa).
+This repo is a **monorepo**. Each language runtime is published **separately** to its own registry.  
+Installing Node never pulls PHP, Python, or Go (and vice versa).
 
-| Language | Registry | Package name | Source folder |
-| --- | --- | --- | --- |
-| Node.js | npm | `@ryle/backup-kit` | `packages/nodejs` |
-| PHP | Packagist / Composer | `backup-kit/backup-kit` | `packages/php` |
-| Python | PyPI | `backup-kit` | `packages/python` |
-| Go | Go modules | `github.com/backup-kit/backup-kit` | `packages/go` |
+| Language | Registry | Package name | Source folder | End-user install |
+| --- | --- | --- | --- | --- |
+| Node.js | [npm](https://www.npmjs.com) | `@ryle/backup-kit` | `packages/nodejs` | `npm i @ryle/backup-kit` |
+| PHP | [Packagist](https://packagist.org) | `backup-kit/backup-kit` | `packages/php` | `composer require backup-kit/backup-kit` |
+| Python | [PyPI](https://pypi.org) | `backup-kit` | `packages/python` | `pip install backup-kit` |
+| Go | Go modules | `github.com/backup-kit/backup-kit` | `packages/go` | `go get github.com/backup-kit/backup-kit/backupkit` |
 
-The root `package.json` is `"private": true` — the monorepo itself is never published to npm.
+The root `package.json` is **`private: true`** — never publish the monorepo root to npm.
 
 ---
 
-## 1) Node.js (npm only)
+## Preflight (every language)
+
+Before any publish:
+
+1. Bump the version in that package only (Node `package.json`, PHP `composer.json`, Python `pyproject.toml`, Go git tag).
+2. Run that package’s tests (see below).
+3. Confirm secrets (`.env`, keys) are not in the tarball / release.
+4. Publish from the **package folder**, not the monorepo root.
+
+### Test everything from the repo root
+
+```bash
+# Node
+pnpm test
+
+# PHP
+cd packages/php && composer install && composer test && cd ../..
+
+# Python
+cd packages/python && python -m pip install -e ".[dev]" && python -m pytest && cd ../..
+
+# Go
+cd packages/go && go test ./... && cd ../..
+```
+
+Or use the root helpers:
+
+```bash
+pnpm test                 # Node
+pnpm test:php
+pnpm test:python
+pnpm test:go
+pnpm test:all             # all four
+```
+
+---
+
+## 1) Node.js → npm
 
 ### Install (end users)
 
 ```bash
-# NestJS / Express / plain Node
 npm install @ryle/backup-kit
 # or
 pnpm add @ryle/backup-kit
@@ -27,54 +63,37 @@ pnpm add @ryle/backup-kit
 yarn add @ryle/backup-kit
 ```
 
-What you get: **only** the Node runtime (+ its npm dependencies like `zod`, `croner`).  
-You do **not** get PHP, Python, or Go code.
+You get **only** the Node runtime (`zod`, `croner`, adapters, CLI). No PHP/Python/Go.
 
-### NestJS
-
-```bash
-pnpm add @ryle/backup-kit
-```
-
-```ts
-import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
-
-const backup = BackupModule.forRoot({
-  schedule: "0 2 * * *",
-  retention: { keepLast: 7 },
-  outputs: [{ driver: "local", path: "./storage/backups" }],
-});
-```
-
-### Express
-
-```bash
-pnpm add @ryle/backup-kit express
-```
-
-```ts
-import { setupBackupKit } from "@ryle/backup-kit/adapters/express";
-
-setupBackupKit(app, {
-  schedule: "0 2 * * *",
-  retention: { keepLast: 7 },
-  outputs: [{ driver: "local", path: "./backups" }],
-});
-```
-
-### Publish Node to npm (maintainers)
+### Maintainer publish
 
 ```bash
 cd packages/nodejs
 pnpm install
+pnpm test
 pnpm build
+pnpm pack --dry-run          # review files: dist/, bin/, README.md
+npm login                    # once
 pnpm publish --access public
-# publishes ONLY packages/nodejs → @ryle/backup-kit
 ```
+
+From monorepo root:
+
+```bash
+pnpm publish:nodejs
+```
+
+**Checklist**
+
+- [ ] `version` bumped in `packages/nodejs/package.json`
+- [ ] `pnpm test` + `pnpm build` pass
+- [ ] `files` field only ships `dist`, `bin`, `README.md`
+- [ ] Scoped package uses `--access public` (or `publishConfig.access`)
+- [ ] Tag/release notes mention `@ryle/backup-kit@x.y.z`
 
 ---
 
-## 2) PHP (Composer only)
+## 2) PHP → Packagist (Composer)
 
 ### Install (end users)
 
@@ -82,33 +101,46 @@ pnpm publish --access public
 composer require backup-kit/backup-kit
 ```
 
-What you get: **only** the PHP package under `vendor/backup-kit/backup-kit`.  
-No Node `node_modules`, no Python package.
+You get **only** `vendor/backup-kit/backup-kit`. No `node_modules`.
 
-### Laravel
+### Maintainer publish
+
+Packagist does **not** upload a zip from your laptop. It mirrors a **git** tag.
+
+1. Ensure `packages/php/composer.json` has correct `name`, `description`, `license`, `autoload` (do **not** set `version` — Packagist uses git tags).
+2. Push the monorepo (or a subtree) to GitHub/GitLab.
+3. Create a SemVer tag, e.g. `v0.1.0` on the PHP package repo.
+4. On [packagist.org](https://packagist.org): **Submit** the repository once, then enable GitHub sync / webhook.
+5. If the Composer package lives in a subdirectory of a monorepo, set Packagist **“Git repository”** + path, **or** publish via `git subtree split` so `packages/php` is the repo root (recommended for clean installs).
+
+**Subtree split (recommended for Packagist):**
 
 ```bash
-composer require backup-kit/backup-kit
+git subtree split --prefix=packages/php -b php-publish
+git push git@github.com:backup-kit/php-backup-kit.git php-publish:main
+git tag -a v0.1.0 php-publish -m "php v0.1.0"
+git push git@github.com:backup-kit/php-backup-kit.git v0.1.0
 ```
 
-```php
-use BackupKit\Adapters\Laravel\BackupKitBridge;
-use BackupKit\BackupKit;
+**Checklist**
 
-$this->app->singleton(BackupKit::class, fn () =>
-    BackupKitBridge::make(config('backup-kit', []), config('database'))
-);
+- [ ] `composer validate` in `packages/php`
+- [ ] `composer test` passes
+- [ ] Tag pushed; Packagist shows the new version
+- [ ] `composer require backup-kit/backup-kit:^x.y` works in a clean folder
+
+### Local test before Packagist
+
+```bash
+cd packages/php
+composer install
+composer test
+composer validate --strict
 ```
-
-### Publish PHP to Packagist (maintainers)
-
-1. Push `packages/php` (or the repo with Packagist path pointing at it)
-2. Submit / sync on [packagist.org](https://packagist.org) as `backup-kit/backup-kit`
-3. Users only run `composer require backup-kit/backup-kit`
 
 ---
 
-## 3) Python (PyPI only)
+## 3) Python → PyPI
 
 ### Install (end users)
 
@@ -118,84 +150,95 @@ pip install backup-kit
 uv add backup-kit
 ```
 
-What you get: **only** the `backup_kit` Python package.  
-No npm, no Composer vendor tree.
+You get **only** the `backup_kit` import. No npm/Composer.
 
-### FastAPI / Django
-
-```bash
-pip install backup-kit
-```
-
-```python
-from backup_kit import from_fastapi
-
-kit = from_fastapi(
-    schedule="0 2 * * *",
-    retention={"keepLast": 7},
-    outputs=[{"driver": "local", "path": "./backups"}],
-)
-```
-
-### Publish Python to PyPI (maintainers)
+### Maintainer publish
 
 ```bash
 cd packages/python
+python -m pip install -U build twine
+python -m pip install -e ".[dev]"
+python -m pytest
 python -m build
-python -m twine upload dist/*
-# publishes ONLY packages/python → backup-kit
+twine check dist/*
+# TestPyPI first (recommended)
+twine upload --repository testpypi dist/*
+# Production
+twine upload dist/*
 ```
+
+**Checklist**
+
+- [ ] `version` bumped in `pyproject.toml`
+- [ ] `pytest` passes
+- [ ] `twine check` clean
+- [ ] Package name `backup-kit` installs as import `backup_kit`
 
 ---
 
-## 4) Go (modules only)
+## 4) Go → modules proxy
 
 ### Install (end users)
 
 ```bash
-go get github.com/backup-kit/backup-kit/backupkit
+go get github.com/backup-kit/backup-kit/backupkit@v0.1.0
 ```
 
-What you get: **only** the Go module (`backupkit` + optional Gin adapter).  
-No npm, Composer, or PyPI packages.
+You get **only** the Go module (core + Gin adapter path).
 
-### Gin
+### Why a split repo / subtree?
 
-```go
-import (
-  "github.com/backup-kit/backup-kit/backupkit"
-  ginadapter "github.com/backup-kit/backup-kit/backupkit/adapters/gin"
-)
+`go.mod` lives in `packages/go` but the module path is `github.com/backup-kit/backup-kit`.  
+`proxy.golang.org` expects **`go.mod` at the repository root** for that path. Use a dedicated Go repo (or subtree) whose root **is** `packages/go`.
 
-h, err := ginadapter.Setup(backupkit.Config{
-  Schedule: "0 2 * * *",
-  Retention: &backupkit.Retention{KeepLast: backupkit.Int(7)},
-  Outputs: []backupkit.Output{{Driver: "local", Path: "./backups"}},
-})
+```bash
+git subtree split --prefix=packages/go -b go-publish
+git push git@github.com:backup-kit/backup-kit.git go-publish:main
+git tag -a v0.1.0 go-publish -m "go v0.1.0"
+git push git@github.com:backup-kit/backup-kit.git v0.1.0
 ```
 
-### Publish Go module (maintainers)
+Then:
 
-1. Tag a release from `packages/go` (module path `github.com/backup-kit/backup-kit`)
-2. Push the tag so `proxy.golang.org` can fetch it
-3. Users only run `go get github.com/backup-kit/backup-kit/backupkit`
+```bash
+GOPROXY=proxy.golang.org go list -m github.com/backup-kit/backup-kit@v0.1.0
+```
+
+**Checklist**
+
+- [ ] `go test ./...` in `packages/go`
+- [ ] SemVer tag `vX.Y.Z` on the Go module repo
+- [ ] Import path `github.com/backup-kit/backup-kit/backupkit` resolves
+
+### Local test
+
+```bash
+cd packages/go
+go test ./...
+```
+
+---
+
+## Versioning policy
+
+| Package | Where version lives |
+| --- | --- |
+| Node | `packages/nodejs/package.json` → npm |
+| PHP | git tag (+ optional `version` in `composer.json`) → Packagist |
+| Python | `packages/python/pyproject.toml` → PyPI |
+| Go | git tag `vX.Y.Z` on Go module repo → proxy |
+
+Keep SemVer aligned when possible (`1.0.0` across languages), but registries are independent — you may ship Node first.
 
 ---
 
 ## Mental model
 
 ```
-User app (NestJS)
-  └── npm i @ryle/backup-kit     ← Node only
-
-User app (Laravel)
-  └── composer require backup-kit/backup-kit   ← PHP only
-
-User app (FastAPI)
-  └── pip install backup-kit     ← Python only
-
-User app (Gin)
-  └── go get github.com/backup-kit/backup-kit/backupkit   ← Go only
+User app (NestJS)   →  npm i @ryle/backup-kit
+User app (Laravel)  →  composer require backup-kit/backup-kit
+User app (FastAPI)  →  pip install backup-kit
+User app (Gin)      →  go get github.com/backup-kit/backup-kit/backupkit
 ```
 
-Shared docs/spec live in the monorepo for maintainers. End users never install the whole monorepo unless they clone it for development.
+Shared `spec/` + `docs/` stay in the monorepo for maintainers. End users install **one** language package.

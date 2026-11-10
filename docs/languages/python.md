@@ -1,6 +1,6 @@
 # Python
 
-Package: [`packages/python`](../../packages/python) — PyPI package **`backup-kit`** (planned).
+Package: [`packages/python`](../../packages/python) — PyPI package **`backup-kit`** (import `backup_kit`).
 
 ## Install
 
@@ -8,20 +8,29 @@ Package: [`packages/python`](../../packages/python) — PyPI package **`backup-k
 pip install backup-kit
 ```
 
-## Usage (planned)
+## Usage
 
 ```python
-from backup_kit import create_backup_kit, define_config
+from backup_kit import from_fastapi, define_config, create_backup_kit
 
+kit = from_fastapi(
+    schedule="0 2 * * *",
+    retention={"keepLast": 7},
+    outputs=[{"driver": "local", "path": "./backups"}],
+)
+
+# or
 config = define_config({
     "name": "app",
-    "sources": [{"driver": "postgres", "connection": os.environ["DATABASE_URL"]}],
-    "destination": {"driver": "local", "path": "./backups"},
+    "database": "auto",
+    "outputs": [{"driver": "local", "path": "./backups"}],
 })
-
 kit = create_backup_kit(config)
-kit.backup()
 ```
+
+## Publish
+
+See [publishing.md](../publishing.md#3-python--pypi).
 
 ## Examples
 
