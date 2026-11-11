@@ -13,6 +13,9 @@ Desktop.ini
 .env.*
 !.env.example
 
+# Private maintainer notes (local only — never commit)
+.local/
+
 # ── Node (npm / pnpm) ──────────────────────────────────────────
 node_modules/
 dist/
