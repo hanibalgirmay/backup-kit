@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/ryle/backup-kit"
-	ginadapter "github.com/ryle/backup-kit/adapters/gin"
+	"github.com/hanibalgirmay/backup-kit"
+	ginadapter "github.com/hanibalgirmay/backup-kit/adapters/gin"
 	"github.com/gin-gonic/gin"
 )
 

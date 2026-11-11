@@ -12,10 +12,10 @@ When possible, keep SemVer aligned across languages.
 
 ### Added
 
-- Consistent package names: npm/PyPI `backup-kit`, Composer `ryle/backup-kit`, Go `github.com/ryle/backup-kit`
+- Consistent package names aligned to `github.com/hanibalgirmay/backup-kit`
 - Framework-first config: `database: "auto"`, schedule, retention, outputs
 - Storage alias `ssh` → `sftp` (generic SSH remote)
-- Docs: getting started, frameworks, publishing, security policy
+- Docs: getting started, frameworks, security policy
 - Open-source meta: LICENSE (MIT), CONTRIBUTING, CODE_OF_CONDUCT, SECURITY
 
 ### Author

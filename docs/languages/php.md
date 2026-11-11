@@ -1,11 +1,11 @@
 # PHP
 
-Package: [`packages/php`](../../packages/php) — Composer package **`ryle/backup-kit`**.
+Package: [`packages/php`](../../packages/php) — Composer package **`hanibalgirmay/backup-kit`**.
 
 ## Install
 
 ```bash
-composer require ryle/backup-kit
+composer require hanibalgirmay/backup-kit
 ```
 
 ## Programmatic API
@@ -63,10 +63,6 @@ $this->app->singleton(\BackupKit\BackupKit::class, fn () =>
 | `gzip` (default) | `ext-zlib` |
 | `zstd` | `ext-zstd` |
 | `none` | — |
-
-## Publish
-
-See [publishing.md](../publishing.md#2-php--packagist-composer).
 
 ## Examples
 

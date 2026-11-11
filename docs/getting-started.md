@@ -11,8 +11,6 @@ backup-kit is a **framework-first database backup** tool by **Hanibal Girmay**. 
 | Django / FastAPI | [frameworks/python.md](./frameworks/python.md) |
 | Gin / Go | [frameworks/go.md](./frameworks/go.md) |
 
-Publish each language separately: [publishing.md](./publishing.md).
-
 ## Core ideas
 
 1. **`database: "auto"`** — reads `DATABASE_URL`, ORM envs, or framework DB config (relational + Mongo/Redis)

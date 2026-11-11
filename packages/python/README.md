@@ -22,16 +22,12 @@ kit = from_fastapi(
 
 Use `driver: "ssh"` for any SSH/SFTP remote (alias of `sftp`).
 
-## Develop / publish
+## Develop
 
 ```bash
 pip install -e ".[dev]"
 pytest
-python -m build
-twine upload dist/*
 ```
-
-See [docs/publishing.md](../../docs/publishing.md).
 
 **Author:** Hanibal Girmay · **License:** MIT
 

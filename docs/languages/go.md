@@ -1,11 +1,11 @@
 # Go
 
-Package: [`packages/go`](../../packages/go) — Go module **`github.com/ryle/backup-kit`**.
+Package: [`packages/go`](../../packages/go) — Go module **`github.com/hanibalgirmay/backup-kit`**.
 
 ## Install
 
 ```bash
-go get github.com/ryle/backup-kit
+go get github.com/hanibalgirmay/backup-kit
 ```
 
 ## Usage
@@ -25,7 +25,3 @@ result, err := kit.Backup()
 ## Gin
 
 See [docs/frameworks/go.md](../frameworks/go.md) and [`examples/go-gin`](../../examples/go-gin).
-
-## Publish
-
-See [publishing.md](../publishing.md#4-go--modules-proxy).

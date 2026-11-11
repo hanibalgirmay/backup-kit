@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/ryle/backup-kit"
+	"github.com/hanibalgirmay/backup-kit"
 )
 
 // Handler exposes backup-kit HTTP endpoints (Gin, chi, stdlib mux, etc.).

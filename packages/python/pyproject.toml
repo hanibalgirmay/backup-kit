@@ -23,9 +23,8 @@ dependencies = []
 dev = ["pytest>=8.0"]
 
 [project.urls]
-Homepage = "https://github.com/ryle/backup-kit"
-Documentation = "https://github.com/ryle/backup-kit/tree/main/docs"
-Publishing = "https://github.com/ryle/backup-kit/blob/main/docs/publishing.md"
+Homepage = "https://github.com/hanibalgirmay/backup-kit"
+Documentation = "https://github.com/hanibalgirmay/backup-kit/tree/main/docs"
 
 [build-system]
 requires = ["setuptools>=68"]

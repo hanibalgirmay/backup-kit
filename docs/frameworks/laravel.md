@@ -1,9 +1,9 @@
 # Laravel (PHP)
 
-Package: `ryle/backup-kit`
+Package: `hanibalgirmay/backup-kit`
 
 ```bash
-composer require ryle/backup-kit
+composer require hanibalgirmay/backup-kit
 ```
 
 ## Config

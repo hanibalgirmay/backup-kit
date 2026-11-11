@@ -28,10 +28,6 @@ config = define_config({
 kit = create_backup_kit(config)
 ```
 
-## Publish
-
-See [publishing.md](../publishing.md#3-python--pypi).
-
 ## Examples
 
 See [`examples/python-*`](../../examples/).

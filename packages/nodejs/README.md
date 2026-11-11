@@ -49,15 +49,12 @@ npx backup-kit list
 npx backup-kit prune
 ```
 
-## Develop / publish
+## Develop
 
 ```bash
 pnpm install
 pnpm test
 pnpm build
-pnpm publish --access public
 ```
 
 **Author:** Hanibal Girmay · **License:** MIT
-
-See [docs/publishing.md](../../docs/publishing.md).

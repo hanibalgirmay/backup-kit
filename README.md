@@ -13,7 +13,6 @@
   <a href="./docs/getting-started.md">Getting started</a> ·
   <a href="./docs/configuration.md">Configuration</a> ·
   <a href="./docs/drivers.md">Drivers</a> ·
-  <a href="./docs/publishing.md">Publishing</a> ·
   <a href="./SECURITY.md">Security</a>
 </p>
 
@@ -40,11 +39,11 @@ Each language is a **separate** package. Installing one never pulls the others.
 | You use | Install | Registry |
 | --- | --- | --- |
 | NestJS / Express / Node | `npm install backup-kit` | npm |
-| Laravel / PHP | `composer require ryle/backup-kit` | Packagist |
+| Laravel / PHP | `composer require hanibalgirmay/backup-kit` | Packagist |
 | Django / FastAPI / Python | `pip install backup-kit` | PyPI |
-| Gin / Go | `go get github.com/ryle/backup-kit` | Go modules |
+| Gin / Go | `go get github.com/hanibalgirmay/backup-kit` | Go modules |
 
-Full install + maintainer publish steps → [docs/publishing.md](./docs/publishing.md)
+Source: [github.com/hanibalgirmay/backup-kit](https://github.com/hanibalgirmay/backup-kit)
 
 ---
 
@@ -98,7 +97,7 @@ setupBackupKit(app, {
 ### Laravel
 
 ```bash
-composer require ryle/backup-kit
+composer require hanibalgirmay/backup-kit
 ```
 
 ```php
@@ -132,13 +131,13 @@ kit = from_fastapi(
 ### Go (Gin)
 
 ```bash
-go get github.com/ryle/backup-kit
+go get github.com/hanibalgirmay/backup-kit
 ```
 
 ```go
 import (
-  "github.com/ryle/backup-kit"
-  ginadapter "github.com/ryle/backup-kit/adapters/gin"
+  "github.com/hanibalgirmay/backup-kit"
+  ginadapter "github.com/hanibalgirmay/backup-kit/adapters/gin"
 )
 
 h, err := ginadapter.Setup(backupkit.Config{
@@ -182,7 +181,6 @@ Framework guides: [Node](./docs/frameworks/nodejs.md) · [Laravel](./docs/framew
 | [Getting started](./docs/getting-started.md) | First backup in minutes |
 | [Configuration](./docs/configuration.md) | Config shape & credentials |
 | [Drivers](./docs/drivers.md) | DB + storage drivers |
-| [Publishing](./docs/publishing.md) | Publish to npm / Packagist / PyPI / Go |
 | [Security](./SECURITY.md) | Vulnerability reporting |
 | [Contributing](./CONTRIBUTING.md) | Dev setup & PR guide |
 | [Changelog](./CHANGELOG.md) | Release notes |

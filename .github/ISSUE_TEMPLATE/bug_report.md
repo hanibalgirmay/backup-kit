@@ -6,9 +6,9 @@ labels: bug
 
 **Package**
 - [ ] Node `backup-kit`
-- [ ] PHP `ryle/backup-kit`
+- [ ] PHP `hanibalgirmay/backup-kit`
 - [ ] Python `backup-kit`
-- [ ] Go `github.com/ryle/backup-kit`
+- [ ] Go `github.com/hanibalgirmay/backup-kit`
 
 **Version**
 e.g. `1.0.0`

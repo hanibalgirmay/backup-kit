@@ -5,7 +5,7 @@ Go module for framework-first database backups. Published separately from npm/Co
 ## Install
 
 ```bash
-go get github.com/ryle/backup-kit
+go get github.com/hanibalgirmay/backup-kit
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ import (
   "fmt"
   "log"
 
-  "github.com/ryle/backup-kit"
+  "github.com/hanibalgirmay/backup-kit"
 )
 
 func main() {
@@ -64,7 +64,7 @@ kit := backupkit.MustNew(backupkit.Config{
 ## Gin
 
 ```go
-import ginadapter "github.com/ryle/backup-kit/adapters/gin"
+import ginadapter "github.com/hanibalgirmay/backup-kit/adapters/gin"
 
 h, err := ginadapter.Setup(backupkit.Config{
   Schedule: "0 2 * * *",
@@ -73,15 +73,13 @@ h, err := ginadapter.Setup(backupkit.Config{
 // h.Mount(...) or gin.WrapF(h.Backup)
 ```
 
-## Develop / publish
+## Develop
 
 ```bash
 cd packages/go
 go test ./...
 ```
 
-Go modules need `go.mod` at the **module repo root**. Publish via subtree/split so `packages/go` becomes the root of `github.com/ryle/backup-kit`, then tag `v0.1.0`.
-
-See [docs/frameworks/go.md](../../docs/frameworks/go.md) and [docs/publishing.md](../../docs/publishing.md).
+See [docs/frameworks/go.md](../../docs/frameworks/go.md).
 
 **Author:** Hanibal Girmay · **License:** MIT

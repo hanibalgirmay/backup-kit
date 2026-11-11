@@ -1,3 +1,3 @@
-module github.com/ryle/backup-kit
+module github.com/hanibalgirmay/backup-kit
 
 go 1.22

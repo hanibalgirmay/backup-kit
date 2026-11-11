@@ -8,7 +8,6 @@ Project site documentation for **backup-kit** by **Hanibal Girmay**.
 - [Configuration](./configuration.md)
 - [Drivers](./drivers.md)
 - [Retention](./retention.md)
-- [Publishing packages](./publishing.md)
 
 ## Frameworks
 

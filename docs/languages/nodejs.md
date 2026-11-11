@@ -50,7 +50,3 @@ npx backup-kit prune
 | `backup-kit/adapters/koa` | Koa adapter |
 | `backup-kit/adapters/hono` | Hono adapter |
 | `backup-kit/cli` | CLI program |
-
-## Publish
-
-See [publishing.md](../publishing.md#1-nodejs--npm).

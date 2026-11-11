@@ -1,5 +1,5 @@
 {
-  "name": "ryle/backup-kit",
+  "name": "hanibalgirmay/backup-kit",
   "description": "Framework-first database backup toolkit for Laravel and PHP apps",
   "type": "library",
   "license": "MIT",
@@ -10,10 +10,10 @@
       "role": "Developer"
     }
   ],
-  "homepage": "https://github.com/ryle/backup-kit",
+  "homepage": "https://github.com/hanibalgirmay/backup-kit",
   "support": {
-    "issues": "https://github.com/ryle/backup-kit/issues",
-    "source": "https://github.com/ryle/backup-kit"
+    "issues": "https://github.com/hanibalgirmay/backup-kit/issues",
+    "source": "https://github.com/hanibalgirmay/backup-kit"
   },
   "require": {
     "php": ">=8.2",

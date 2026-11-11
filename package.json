@@ -2,7 +2,7 @@
   "name": "backup-kit-monorepo",
   "private": true,
   "version": "0.0.0",
-  "description": "Monorepo root — not published. Publish packages/* separately.",
+  "description": "Monorepo root — private. Language packages live under packages/*.",
   "packageManager": "pnpm@12.3.4",
   "scripts": {
     "build": "pnpm --filter backup-kit build",
@@ -12,7 +12,6 @@
     "test:php": "composer test --working-dir=packages/php",
     "test:python": "python -m pytest packages/python/tests",
     "test:go": "go -C packages/go test ./...",
-    "test:all": "pnpm test:nodejs && pnpm test:php && pnpm test:python && pnpm test:go",
-    "publish:nodejs": "pnpm --filter backup-kit publish --access public"
+    "test:all": "pnpm test:nodejs && pnpm test:php && pnpm test:python && pnpm test:go"
   }
 }
