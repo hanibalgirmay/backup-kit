@@ -1,5 +1,5 @@
 {
-  "name": "@ryle/backup-kit",
+  "name": "backup-kit",
   "version": "1.0.0",
   "description": "Framework-first database backup toolkit for NestJS, Express, and Node apps",
   "license": "MIT",
@@ -54,9 +54,6 @@
     "bin",
     "README.md"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

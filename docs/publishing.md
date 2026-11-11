@@ -3,12 +3,26 @@
 This repo is a **monorepo**. Each language runtime is published **separately** to its own registry.  
 Installing Node never pulls PHP, Python, or Go (and vice versa).
 
-| Language | Registry | Package name | Source folder | End-user install |
-| --- | --- | --- | --- | --- |
-| Node.js | [npm](https://www.npmjs.com) | `@ryle/backup-kit` | `packages/nodejs` | `npm i @ryle/backup-kit` |
-| PHP | [Packagist](https://packagist.org) | `backup-kit/backup-kit` | `packages/php` | `composer require backup-kit/backup-kit` |
-| Python | [PyPI](https://pypi.org) | `backup-kit` | `packages/python` | `pip install backup-kit` |
-| Go | Go modules | `github.com/backup-kit/backup-kit` | `packages/go` | `go get github.com/backup-kit/backup-kit/backupkit` |
+## Naming plan (same product everywhere)
+
+Product name: **backup-kit**. Org / vendor: **ryle** (only where the registry requires it).
+
+| Language | Registry | Package name | End-user install |
+| --- | --- | --- | --- |
+| Node.js | [npm](https://www.npmjs.com) | `backup-kit` | `npm i backup-kit` |
+| PHP | [Packagist](https://packagist.org) | `ryle/backup-kit` | `composer require ryle/backup-kit` |
+| Python | [PyPI](https://pypi.org) | `backup-kit` | `pip install backup-kit` |
+| Go | Go modules | `github.com/ryle/backup-kit` | `go get github.com/ryle/backup-kit` |
+
+| Language | Source folder |
+| --- | --- |
+| Node.js | `packages/nodejs` |
+| PHP | `packages/php` |
+| Python | `packages/python` |
+| Go | `packages/go` |
+
+Composer always needs `vendor/package` — use `ryle/backup-kit`, never `backup-kit/backup-kit`.  
+Go module path is `github.com/ryle/backup-kit` (import the same; package id stays `backupkit`).
 
 The root `package.json` is **`private: true`** — never publish the monorepo root to npm.
 
@@ -56,11 +70,11 @@ pnpm test:all             # all four
 ### Install (end users)
 
 ```bash
-npm install @ryle/backup-kit
+npm install backup-kit
 # or
-pnpm add @ryle/backup-kit
+pnpm add backup-kit
 # or
-yarn add @ryle/backup-kit
+yarn add backup-kit
 ```
 
 You get **only** the Node runtime (`zod`, `croner`, adapters, CLI). No PHP/Python/Go.
@@ -89,7 +103,7 @@ pnpm publish:nodejs
 - [ ] `pnpm test` + `pnpm build` pass
 - [ ] `files` field only ships `dist`, `bin`, `README.md`
 - [ ] Scoped package uses `--access public` (or `publishConfig.access`)
-- [ ] Tag/release notes mention `@ryle/backup-kit@x.y.z`
+- [ ] Tag/release notes mention `backup-kit@x.y.z`
 
 ---
 
@@ -98,10 +112,10 @@ pnpm publish:nodejs
 ### Install (end users)
 
 ```bash
-composer require backup-kit/backup-kit
+composer require ryle/backup-kit
 ```
 
-You get **only** `vendor/backup-kit/backup-kit`. No `node_modules`.
+You get **only** `vendor/ryle/backup-kit`. No `node_modules`.
 
 ### Maintainer publish
 
@@ -127,7 +141,7 @@ git push git@github.com:backup-kit/php-backup-kit.git v0.1.0
 - [ ] `composer validate` in `packages/php`
 - [ ] `composer test` passes
 - [ ] Tag pushed; Packagist shows the new version
-- [ ] `composer require backup-kit/backup-kit:^x.y` works in a clean folder
+- [ ] `composer require ryle/backup-kit:^x.y` works in a clean folder
 
 ### Local test before Packagist
 
@@ -181,34 +195,34 @@ twine upload dist/*
 ### Install (end users)
 
 ```bash
-go get github.com/backup-kit/backup-kit/backupkit@v0.1.0
+go get github.com/ryle/backup-kit@v0.1.0
 ```
 
 You get **only** the Go module (core + Gin adapter path).
 
 ### Why a split repo / subtree?
 
-`go.mod` lives in `packages/go` but the module path is `github.com/backup-kit/backup-kit`.  
+`go.mod` lives in `packages/go` but the module path is `github.com/ryle/backup-kit`.  
 `proxy.golang.org` expects **`go.mod` at the repository root** for that path. Use a dedicated Go repo (or subtree) whose root **is** `packages/go`.
 
 ```bash
 git subtree split --prefix=packages/go -b go-publish
-git push git@github.com:backup-kit/backup-kit.git go-publish:main
+git push git@github.com:ryle/backup-kit.git go-publish:main
 git tag -a v0.1.0 go-publish -m "go v0.1.0"
-git push git@github.com:backup-kit/backup-kit.git v0.1.0
+git push git@github.com:ryle/backup-kit.git v0.1.0
 ```
 
 Then:
 
 ```bash
-GOPROXY=proxy.golang.org go list -m github.com/backup-kit/backup-kit@v0.1.0
+GOPROXY=proxy.golang.org go list -m github.com/ryle/backup-kit@v0.1.0
 ```
 
 **Checklist**
 
 - [ ] `go test ./...` in `packages/go`
 - [ ] SemVer tag `vX.Y.Z` on the Go module repo
-- [ ] Import path `github.com/backup-kit/backup-kit/backupkit` resolves
+- [ ] Import path `github.com/ryle/backup-kit` resolves
 
 ### Local test
 
@@ -235,10 +249,10 @@ Keep SemVer aligned when possible (`1.0.0` across languages), but registries are
 ## Mental model
 
 ```
-User app (NestJS)   →  npm i @ryle/backup-kit
-User app (Laravel)  →  composer require backup-kit/backup-kit
+User app (NestJS)   →  npm i backup-kit
+User app (Laravel)  →  composer require ryle/backup-kit
 User app (FastAPI)  →  pip install backup-kit
-User app (Gin)      →  go get github.com/backup-kit/backup-kit/backupkit
+User app (Gin)      →  go get github.com/ryle/backup-kit
 ```
 
 Shared `spec/` + `docs/` stay in the monorepo for maintainers. End users install **one** language package.

@@ -1,11 +1,11 @@
 # Go
 
-Package: [`packages/go`](../../packages/go) — Go module **`github.com/backup-kit/backup-kit`**.
+Package: [`packages/go`](../../packages/go) — Go module **`github.com/ryle/backup-kit`**.
 
 ## Install
 
 ```bash
-go get github.com/backup-kit/backup-kit/backupkit
+go get github.com/ryle/backup-kit
 ```
 
 ## Usage

@@ -39,10 +39,10 @@ Each language is a **separate** package. Installing one never pulls the others.
 
 | You use | Install | Registry |
 | --- | --- | --- |
-| NestJS / Express / Node | `npm install @ryle/backup-kit` | npm |
-| Laravel / PHP | `composer require backup-kit/backup-kit` | Packagist |
+| NestJS / Express / Node | `npm install backup-kit` | npm |
+| Laravel / PHP | `composer require ryle/backup-kit` | Packagist |
 | Django / FastAPI / Python | `pip install backup-kit` | PyPI |
-| Gin / Go | `go get github.com/backup-kit/backup-kit/backupkit` | Go modules |
+| Gin / Go | `go get github.com/ryle/backup-kit` | Go modules |
 
 Full install + maintainer publish steps → [docs/publishing.md](./docs/publishing.md)
 
@@ -63,11 +63,11 @@ Full install + maintainer publish steps → [docs/publishing.md](./docs/publishi
 ### NestJS
 
 ```bash
-npm install @ryle/backup-kit
+npm install backup-kit
 ```
 
 ```ts
-import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
+import { BackupModule } from "backup-kit/adapters/nestjs";
 
 BackupModule.forRoot({
   // database: "auto" by default — DATABASE_URL / ORM env
@@ -80,12 +80,12 @@ BackupModule.forRoot({
 ### Express
 
 ```bash
-npm install @ryle/backup-kit
+npm install backup-kit
 ```
 
 ```ts
 import express from "express";
-import { setupBackupKit } from "@ryle/backup-kit/adapters/express";
+import { setupBackupKit } from "backup-kit/adapters/express";
 
 const app = express();
 setupBackupKit(app, {
@@ -98,7 +98,7 @@ setupBackupKit(app, {
 ### Laravel
 
 ```bash
-composer require backup-kit/backup-kit
+composer require ryle/backup-kit
 ```
 
 ```php
@@ -132,13 +132,13 @@ kit = from_fastapi(
 ### Go (Gin)
 
 ```bash
-go get github.com/backup-kit/backup-kit/backupkit
+go get github.com/ryle/backup-kit
 ```
 
 ```go
 import (
-  "github.com/backup-kit/backup-kit/backupkit"
-  ginadapter "github.com/backup-kit/backup-kit/backupkit/adapters/gin"
+  "github.com/ryle/backup-kit"
+  ginadapter "github.com/ryle/backup-kit/adapters/gin"
 )
 
 h, err := ginadapter.Setup(backupkit.Config{
@@ -189,43 +189,9 @@ Framework guides: [Node](./docs/frameworks/nodejs.md) · [Laravel](./docs/framew
 
 ---
 
-## Repository layout
-
-```
-backup-kit/
-├── spec/             # shared contract
-├── docs/             # user + maintainer guides
-├── examples/         # Nest, Express, Laravel, FastAPI, Gin, …
-├── packages/
-│   ├── nodejs/       # @ryle/backup-kit          → npm
-│   ├── php/          # backup-kit/backup-kit     → Packagist
-│   ├── python/       # backup-kit                → PyPI
-│   └── go/           # github.com/backup-kit/…   → Go modules
-├── SECURITY.md
-├── CONTRIBUTING.md
-└── LICENSE
-```
-
----
-
-## Develop locally
-
-```bash
-pnpm install
-pnpm test:all          # Node + PHP + Python + Go
-```
-
-Copy [`.env.example`](./.env.example) → `.env` for local experiments (never commit secrets).
-
----
-
 ## Author & license
 
 Created and maintained by **Hanibal Girmay**.
 
-```
-MIT © Hanibal Girmay
-```
-
-See [LICENSE](./LICENSE) for the full text.  
+MIT © Hanibal Girmay — see [LICENSE](./LICENSE).  
 By participating, you agree to our [Code of Conduct](./CODE_OF_CONDUCT.md).

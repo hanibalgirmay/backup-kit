@@ -12,7 +12,7 @@ When possible, keep SemVer aligned across languages.
 
 ### Added
 
-- Multi-language monorepo: Node (`@ryle/backup-kit`), PHP, Python, Go
+- Consistent package names: npm/PyPI `backup-kit`, Composer `ryle/backup-kit`, Go `github.com/ryle/backup-kit`
 - Framework-first config: `database: "auto"`, schedule, retention, outputs
 - Storage alias `ssh` → `sftp` (generic SSH remote)
 - Docs: getting started, frameworks, publishing, security policy

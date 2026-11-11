@@ -5,10 +5,10 @@ labels: bug
 ---
 
 **Package**
-- [ ] Node `@ryle/backup-kit`
-- [ ] PHP `backup-kit/backup-kit`
+- [ ] Node `backup-kit`
+- [ ] PHP `ryle/backup-kit`
 - [ ] Python `backup-kit`
-- [ ] Go `github.com/backup-kit/backup-kit`
+- [ ] Go `github.com/ryle/backup-kit`
 
 **Version**
 e.g. `1.0.0`

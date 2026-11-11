@@ -5,7 +5,7 @@ PHP runtime for the backup-kit contract. Implements the shared [`spec/`](../../s
 ## Install
 
 ```bash
-composer require backup-kit/backup-kit
+composer require ryle/backup-kit
 ```
 
 ## Usage

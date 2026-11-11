@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/backup-kit/backup-kit/backupkit"
+	backupkit "github.com/ryle/backup-kit"
 )
 
 func TestDefineConfigAutoDatabase(t *testing.T) {

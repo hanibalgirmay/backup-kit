@@ -1,7 +1,7 @@
-﻿# Node + NestJS example
+# Node + NestJS example
 
 ```ts
-import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
+import { BackupModule } from "backup-kit/adapters/nestjs";
 
 const backup = BackupModule.forRoot({
   schedule: "0 2 * * *",

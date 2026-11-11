@@ -1,11 +1,11 @@
 # Go (Gin / plain)
 
-Package: [`packages/go`](../../packages/go) — Go module **`github.com/backup-kit/backup-kit`**.
+Package: [`packages/go`](../../packages/go) — Go module **`github.com/ryle/backup-kit`**.
 
 ## Install
 
 ```bash
-go get github.com/backup-kit/backup-kit/backupkit
+go get github.com/ryle/backup-kit
 ```
 
 This installs **only** the Go module — not the npm or Composer packages.
@@ -27,8 +27,8 @@ result, err := kit.RunScheduled()
 
 ```go
 import (
-  "github.com/backup-kit/backup-kit/backupkit"
-  ginadapter "github.com/backup-kit/backup-kit/backupkit/adapters/gin"
+  "github.com/ryle/backup-kit"
+  ginadapter "github.com/ryle/backup-kit/adapters/gin"
   "github.com/gin-gonic/gin"
 )
 

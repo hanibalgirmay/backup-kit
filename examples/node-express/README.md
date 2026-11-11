@@ -1,8 +1,8 @@
-﻿# Node + Express example
+# Node + Express example
 
 ```ts
 import express from "express";
-import { setupBackupKit } from "@ryle/backup-kit/adapters/express";
+import { setupBackupKit } from "backup-kit/adapters/express";
 
 const app = express();
 setupBackupKit(app, {

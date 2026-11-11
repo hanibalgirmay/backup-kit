@@ -1,19 +1,19 @@
 # Node.js
 
-Package: [`packages/nodejs`](../../packages/nodejs) — published as **`@ryle/backup-kit`** on npm.
+Package: [`packages/nodejs`](../../packages/nodejs) — published as **`backup-kit`** on npm.
 
 ## Install
 
 ```bash
-npm install @ryle/backup-kit
+npm install backup-kit
 # or
-pnpm add @ryle/backup-kit
+pnpm add backup-kit
 ```
 
 ## Programmatic API
 
 ```ts
-import { createBackupKit, defineConfig } from "@ryle/backup-kit";
+import { createBackupKit, defineConfig } from "backup-kit";
 
 const config = defineConfig({
   name: "app",
@@ -43,13 +43,13 @@ npx backup-kit prune
 
 | Path | Contents |
 | --- | --- |
-| `@ryle/backup-kit` | Core API |
-| `@ryle/backup-kit/adapters/express` | Express adapter |
-| `@ryle/backup-kit/adapters/fastify` | Fastify adapter |
-| `@ryle/backup-kit/adapters/nestjs` | NestJS module |
-| `@ryle/backup-kit/adapters/koa` | Koa adapter |
-| `@ryle/backup-kit/adapters/hono` | Hono adapter |
-| `@ryle/backup-kit/cli` | CLI program |
+| `backup-kit` | Core API |
+| `backup-kit/adapters/express` | Express adapter |
+| `backup-kit/adapters/fastify` | Fastify adapter |
+| `backup-kit/adapters/nestjs` | NestJS module |
+| `backup-kit/adapters/koa` | Koa adapter |
+| `backup-kit/adapters/hono` | Hono adapter |
+| `backup-kit/cli` | CLI program |
 
 ## Publish
 

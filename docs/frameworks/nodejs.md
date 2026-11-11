@@ -1,16 +1,16 @@
 # Node.js frameworks (NestJS / Express)
 
-Package: `@ryle/backup-kit`
+Package: `backup-kit`
 
 ```bash
-pnpm add @ryle/backup-kit
+pnpm add backup-kit
 ```
 
 ## NestJS
 
 ```ts
 import { Module } from "@nestjs/common";
-import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
+import { BackupModule } from "backup-kit/adapters/nestjs";
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
 export class AppModule {}
 
 // app.module bootstrap / provider:
-import { BackupModule } from "@ryle/backup-kit/adapters/nestjs";
+import { BackupModule } from "backup-kit/adapters/nestjs";
 
 const backup = BackupModule.forRoot({
   // database auto-discovered from DATABASE_URL / TypeORM / Prisma env
@@ -45,7 +45,7 @@ Inject `backup.service` and call `backup()` / `list()` / `prune()`, or rely on t
 
 ```ts
 import express from "express";
-import { setupBackupKit } from "@ryle/backup-kit/adapters/express";
+import { setupBackupKit } from "backup-kit/adapters/express";
 
 const app = express();
 
@@ -69,7 +69,7 @@ npx backup-kit backup     # one-shot
 ```
 
 ```ts
-import { createBackupKit } from "@ryle/backup-kit";
+import { createBackupKit } from "backup-kit";
 
 const kit = createBackupKit({
   database: "auto",

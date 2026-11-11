@@ -14,7 +14,7 @@ Do **not** open a public GitHub issue for security problems.
 Please email **Hanibal Girmay** with details:
 
 - **Email:** open a private channel via your GitHub profile contact, or create a [GitHub Security Advisory](https://docs.github.com/en/code-security/security-advisories) on this repository once it is public
-- Include: affected package (`@ryle/backup-kit`, PHP, Python, or Go), version, impact, and steps to reproduce
+- Include: affected package (`backup-kit`, PHP, Python, or Go), version, impact, and steps to reproduce
 
 You should receive an acknowledgement within a few days. If the report is confirmed, we will work on a fix and credit you (unless you prefer to remain anonymous).
 

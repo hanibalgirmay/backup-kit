@@ -1,11 +1,11 @@
 # PHP
 
-Package: [`packages/php`](../../packages/php) — Composer package **`backup-kit/backup-kit`**.
+Package: [`packages/php`](../../packages/php) — Composer package **`ryle/backup-kit`**.
 
 ## Install
 
 ```bash
-composer require backup-kit/backup-kit
+composer require ryle/backup-kit
 ```
 
 ## Programmatic API

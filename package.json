@@ -5,14 +5,14 @@
   "description": "Monorepo root — not published. Publish packages/* separately.",
   "packageManager": "pnpm@12.3.4",
   "scripts": {
-    "build": "pnpm --filter @ryle/backup-kit build",
-    "test": "pnpm --filter @ryle/backup-kit test",
-    "typecheck": "pnpm --filter @ryle/backup-kit typecheck",
-    "test:nodejs": "pnpm --filter @ryle/backup-kit test",
+    "build": "pnpm --filter backup-kit build",
+    "test": "pnpm --filter backup-kit test",
+    "typecheck": "pnpm --filter backup-kit typecheck",
+    "test:nodejs": "pnpm --filter backup-kit test",
     "test:php": "composer test --working-dir=packages/php",
     "test:python": "python -m pytest packages/python/tests",
     "test:go": "go -C packages/go test ./...",
     "test:all": "pnpm test:nodejs && pnpm test:php && pnpm test:python && pnpm test:go",
-    "publish:nodejs": "pnpm --filter @ryle/backup-kit publish --access public"
+    "publish:nodejs": "pnpm --filter backup-kit publish --access public"
   }
 }
