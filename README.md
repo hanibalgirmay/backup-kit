@@ -188,7 +188,6 @@ Framework guides: [Node](./docs/frameworks/nodejs.md) · [Laravel](./docs/framew
 ---
 
 ## Author & license
-
 Created and maintained by **Hanibal Girmay**.
 
 MIT © Hanibal Girmay — see [LICENSE](./LICENSE).  
